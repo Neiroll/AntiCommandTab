@@ -1,0 +1,12 @@
+#############################################
+#   AntiCommandTab v2.1 by libraryaddict    #
+#     new and improved by sgtcaze           #
+#         Go to www.sgtcaze.com             #
+#############################################
+
+# Sent to players attempting use /plugins, /pl, /version, /about or /?
+DenyMessage: '&bYou are not allowed to see our plugin list.'
+#
+# Possible values: %player - Replaces with the player's list name
+#                  &a-f/0-9 - Replaces with color codes
+# Example: '&bSorry &c%player, &bthat command is not allowed.'
