@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
-	
+
 	ProtocolManager protocolManager;
 
 	public void onEnable() {
@@ -44,7 +44,11 @@ public class Main extends JavaPlugin implements Listener {
 										.contains("  ")))
 								|| ((message.startsWith("/version")) && (!message
 										.contains("  ")))
+								|| ((message.startsWith("/?")) && (!message
+										.contains("  ")))
 								|| ((message.startsWith("/about")) && (!message
+										.contains("  ")))
+								|| ((message.startsWith("/help")) && (!message
 										.contains("  "))))
 							event.setCancelled(true);
 					} catch (FieldAccessException e) {
@@ -88,8 +92,9 @@ public class Main extends JavaPlugin implements Listener {
 				event.setCancelled(true);
 				Player player = event.getPlayer();
 				String DenyMessage = getConfig().getString("DenyMessage");
-				DenyMessage = DenyMessage.replaceAll("&", "ยง").replaceAll("%player",
-						player.getPlayerListName());;
+				DenyMessage = DenyMessage.replaceAll("&", "ง").replaceAll(
+						"%player", player.getPlayerListName());
+				;
 				event.getPlayer().sendMessage(DenyMessage);
 			}
 		}
