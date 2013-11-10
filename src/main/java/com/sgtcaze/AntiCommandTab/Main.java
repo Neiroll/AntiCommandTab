@@ -92,9 +92,8 @@ public class Main extends JavaPlugin implements Listener {
 				event.setCancelled(true);
 				Player player = event.getPlayer();
 				String DenyMessage = getConfig().getString("DenyMessage");
-				DenyMessage = DenyMessage.replaceAll("&", "ง").replaceAll(
+				DenyMessage = DenyMessage.replaceAll("&", "ยง").replaceAll(
 						"%player", player.getPlayerListName());
-				;
 				event.getPlayer().sendMessage(DenyMessage);
 			}
 		}
