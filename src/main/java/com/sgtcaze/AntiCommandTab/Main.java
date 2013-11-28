@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,10 +19,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
 
+	// ProtocolLib Hook
 	ProtocolManager protocolManager;
 
 	public void onEnable() {
 		saveDefaultConfig();
+
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		this.protocolManager = ProtocolLibrary.getProtocolManager();
 		this.protocolManager.addPacketListener(new PacketAdapter(this,
@@ -60,6 +61,50 @@ public class Main extends JavaPlugin implements Listener {
 		});
 	}
 
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
+		if (!event.getPlayer().hasPermission("lib.commandtab.bypass")) {
+			if (event.getMessage().equalsIgnoreCase("/plugins")
+					|| event.getMessage().equalsIgnoreCase("/pl")) {
+				event.setCancelled(true);
+				String Plugins = getConfig()
+						.getString("Plugins")
+						.replaceAll("&", "§")
+						.replaceAll("%player",
+								event.getPlayer().getPlayerListName());
+				event.getPlayer().sendMessage(Plugins);
+			} else if (event.getMessage().equalsIgnoreCase("/?")) {
+				event.setCancelled(true);
+				String QuestionMark = getConfig()
+						.getString("QuestionMark")
+						.replaceAll("&", "§")
+						.replaceAll("%player",
+								event.getPlayer().getPlayerListName());
+				event.getPlayer().sendMessage(QuestionMark);
+
+			} else if (event.getMessage().equalsIgnoreCase("/about")) {
+				event.setCancelled(true);
+				String About = getConfig()
+						.getString("About")
+						.replaceAll("&", "§")
+						.replaceAll("%player",
+								event.getPlayer().getPlayerListName());
+				event.getPlayer().sendMessage(About);
+
+			} else if (event.getMessage().equalsIgnoreCase("/version")
+					|| event.getMessage().equalsIgnoreCase("/ver")) {
+				event.setCancelled(true);
+				String Version = getConfig()
+						.getString("Version")
+						.replaceAll("&", "§")
+						.replaceAll("%player",
+								event.getPlayer().getPlayerListName());
+				event.getPlayer().sendMessage(Version);
+			}
+
+		}
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
@@ -75,27 +120,6 @@ public class Main extends JavaPlugin implements Listener {
 						+ ChatColor.RED + " You do not have permission.");
 			}
 		}
-		return true;
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
-		if (event.getPlayer().hasPermission("lib.commandtab.bypass")) {
-		} else {
-			if (event.getMessage().equalsIgnoreCase("/plugins")
-					|| event.getMessage().startsWith("/?")
-					|| event.getMessage().equalsIgnoreCase("/pl")
-					|| event.getMessage().equalsIgnoreCase("/about")
-					|| event.getMessage().equalsIgnoreCase("/version")
-					|| event.getMessage().equalsIgnoreCase("/ver")) {
-				event.setCancelled(true);
-				Player player = event.getPlayer();
-				String DenyMessage = getConfig().getString("DenyMessage");
-				DenyMessage = DenyMessage.replaceAll("&", "§").replaceAll(
-						"%player", player.getPlayerListName());
-				event.getPlayer().sendMessage(DenyMessage);
-			}
-		}
+		return false;
 	}
 }

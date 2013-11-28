@@ -1,12 +1,20 @@
 #############################################
-#   AntiCommandTab v2.1 by libraryaddict    #
-#     new and improved by sgtcaze           #
-#         Go to www.sgtcaze.com             #
+#   AntiCommandTab v3.0 by libraryaddict    #
+#       new and improved by sgtcaze         #
+#         Dev Builds ci.playmc.cc           #
 #############################################
+# Usage:
+# %player - Replaces with the player's list name
+# &a-f/0-9 - Replaces with color codes
 
-# Sent to players attempting use /plugins, /pl, /version, /about or /?
-DenyMessage: '&bYou are not allowed to see our plugin list.'
-#
-# Possible values: %player - Replaces with the player's list name
-#                  &a-f/0-9 - Replaces with color codes
-# Example: '&bSorry &c%player, &bthat command is not allowed.'
+# Sent to players attempting use /plugins and /pl
+Plugins: '&cYou do not have permission.'
+
+# Sent to players attempting use /?
+QuestionMark: '&cYou do not have permission.'
+
+# Sent to players attempting use /about
+About: '&cYou do not have permission.'
+
+# Sent to players attempting use /version and /ver
+Version: '&cYou do not have permission.'

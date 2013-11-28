@@ -1,9 +1,8 @@
 name: AntiCommandTab
-version: 2.6
+version: 3.0
 main: com.sgtcaze.AntiCommandTab.Main
 authors: [libraryaddict, sgtcaze]
 depend: [ProtocolLib]
-
 commands:
    act:
       description: Reload the config.
