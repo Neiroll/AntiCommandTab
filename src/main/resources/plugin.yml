@@ -1,5 +1,5 @@
 name: AntiCommandTab
-version: 3.1
+version: 3.2
 main: com.sgtcaze.AntiCommandTab.Main
 authors: [libraryaddict, sgtcaze]
 depend: [ProtocolLib]
