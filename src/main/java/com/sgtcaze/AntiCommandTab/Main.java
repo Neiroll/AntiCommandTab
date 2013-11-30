@@ -63,9 +63,9 @@ public class Main extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
+		String msg = event.getMessage().toLowerCase();
 		if (!event.getPlayer().hasPermission("lib.commandtab.bypass")) {
-			if (event.getMessage().equalsIgnoreCase("/plugins")
-					|| event.getMessage().equalsIgnoreCase("/pl")) {
+			if (msg.startsWith("/plugins") || msg.startsWith("/pl")) {
 				event.setCancelled(true);
 				String Plugins = getConfig()
 						.getString("Plugins")
@@ -73,7 +73,7 @@ public class Main extends JavaPlugin implements Listener {
 						.replaceAll("%player",
 								event.getPlayer().getPlayerListName());
 				event.getPlayer().sendMessage(Plugins);
-			} else if (event.getMessage().equalsIgnoreCase("/?")) {
+			} else if (msg.startsWith("/?")) {
 				event.setCancelled(true);
 				String QuestionMark = getConfig()
 						.getString("QuestionMark")
@@ -82,7 +82,7 @@ public class Main extends JavaPlugin implements Listener {
 								event.getPlayer().getPlayerListName());
 				event.getPlayer().sendMessage(QuestionMark);
 
-			} else if (event.getMessage().equalsIgnoreCase("/about")) {
+			} else if (msg.startsWith("/about")) {
 				event.setCancelled(true);
 				String About = getConfig()
 						.getString("About")
@@ -91,8 +91,7 @@ public class Main extends JavaPlugin implements Listener {
 								event.getPlayer().getPlayerListName());
 				event.getPlayer().sendMessage(About);
 
-			} else if (event.getMessage().equalsIgnoreCase("/version")
-					|| event.getMessage().equalsIgnoreCase("/ver")) {
+			} else if (msg.startsWith("/version") || msg.startsWith("/ver")) {
 				event.setCancelled(true);
 				String Version = getConfig()
 						.getString("Version")
@@ -101,7 +100,6 @@ public class Main extends JavaPlugin implements Listener {
 								event.getPlayer().getPlayerListName());
 				event.getPlayer().sendMessage(Version);
 			}
-
 		}
 	}
 
