@@ -5,12 +5,15 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.reflect.FieldAccessException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -63,42 +66,79 @@ public class Main extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
-		String msg = event.getMessage().toLowerCase();
+
+		Player player = event.getPlayer();
+		String[] msg = event.getMessage().split(" ");
+
+		List<String> plugins = new ArrayList<String>();
+		plugins.add("pl");
+		plugins.add("plugins");
+
+		List<String> version = new ArrayList<String>();
+		version.add("ver");
+		version.add("version");
+
+		List<String> about = new ArrayList<String>();
+		about.add("about");
+
+		List<String> question = new ArrayList<String>();
+		question.add("?");
+
 		if (!event.getPlayer().hasPermission("lib.commandtab.bypass")) {
-			if (msg.startsWith("/plugins") || msg.startsWith("/pl")) {
-				event.setCancelled(true);
-				String Plugins = getConfig()
-						.getString("Plugins")
-						.replaceAll("&", "§")
-						.replaceAll("%player",
-								event.getPlayer().getPlayerListName());
-				event.getPlayer().sendMessage(Plugins);
-			} else if (msg.startsWith("/?")) {
-				event.setCancelled(true);
-				String QuestionMark = getConfig()
-						.getString("QuestionMark")
-						.replaceAll("&", "§")
-						.replaceAll("%player",
-								event.getPlayer().getPlayerListName());
-				event.getPlayer().sendMessage(QuestionMark);
 
-			} else if (msg.startsWith("/about")) {
-				event.setCancelled(true);
-				String About = getConfig()
-						.getString("About")
-						.replaceAll("&", "§")
-						.replaceAll("%player",
-								event.getPlayer().getPlayerListName());
-				event.getPlayer().sendMessage(About);
+			if (getConfig().getBoolean("BlockPlugins")) {
+				for (String Loop : plugins) {
+					if (msg[0].equalsIgnoreCase("/" + Loop)) {
+						String Plugins = getConfig()
+								.getString("Plugins")
+								.replaceAll("&", "§")
+								.replaceAll("%player",
+										event.getPlayer().getPlayerListName());
+						event.getPlayer().sendMessage(Plugins);
+						event.setCancelled(true);
+					}
+				}
+			}
 
-			} else if (msg.startsWith("/version") || msg.startsWith("/ver")) {
-				event.setCancelled(true);
-				String Version = getConfig()
-						.getString("Version")
-						.replaceAll("&", "§")
-						.replaceAll("%player",
-								event.getPlayer().getPlayerListName());
-				event.getPlayer().sendMessage(Version);
+			if (getConfig().getBoolean("BlockVersion")) {
+				for (String Loop : version) {
+					if (msg[0].equalsIgnoreCase("/" + Loop)) {
+						String Version = getConfig()
+								.getString("Version")
+								.replaceAll("&", "§")
+								.replaceAll("%player",
+										event.getPlayer().getPlayerListName());
+						player.sendMessage(Version);
+						event.setCancelled(true);
+					}
+				}
+			}
+			if (getConfig().getBoolean("BlockAbout")) {
+				for (String Loop : about) {
+					if (msg[0].equalsIgnoreCase("/" + Loop)) {
+						String About = getConfig()
+								.getString("About")
+								.replaceAll("&", "§")
+								.replaceAll("%player",
+										event.getPlayer().getPlayerListName());
+						player.sendMessage(About);
+						event.setCancelled(true);
+					}
+				}
+			}
+
+			if (getConfig().getBoolean("BlockQuestionMark")) {
+				for (String Loop : question) {
+					if (msg[0].equalsIgnoreCase("/" + Loop)) {
+						String QuestionMark = getConfig()
+								.getString("QuestionMark")
+								.replaceAll("&", "§")
+								.replaceAll("%player",
+										event.getPlayer().getPlayerListName());
+						player.sendMessage(QuestionMark);
+						event.setCancelled(true);
+					}
+				}
 			}
 		}
 	}
