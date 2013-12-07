@@ -1,6 +1,6 @@
 name: AntiCommandTab
 version: 3.3
-main: com.sgtcaze.AntiCommandTab.Main
+main: cc.playmc.anticommandtab.AntiCommandTab
 authors: [libraryaddict, sgtcaze]
 depend: [ProtocolLib]
 commands:

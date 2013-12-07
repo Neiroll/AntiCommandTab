@@ -1,5 +1,6 @@
-package com.sgtcaze.AntiCommandTab;
+package cc.playmc.anticommandtab;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.*;
@@ -20,21 +21,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin implements Listener {
+public class AntiCommandTab extends JavaPlugin implements Listener {
 
 	// ProtocolLib Hook
 	ProtocolManager protocolManager;
 
+	//@SuppressWarnings("deprecation")
 	public void onEnable() {
 		saveDefaultConfig();
 
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		this.protocolManager = ProtocolLibrary.getProtocolManager();
-		this.protocolManager.addPacketListener(new PacketAdapter(this,
-				ConnectionSide.CLIENT_SIDE, ListenerPriority.NORMAL,
-				new Integer[] { Integer.valueOf(203) }) {
+		this.protocolManager.addPacketListener(new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
 			public void onPacketReceiving(PacketEvent event) {
-				if (event.getPacketID() == 203)
+				if (event.getPacketType() == PacketType.Play.Client.TAB_COMPLETE)
 					try {
 						if (event.getPlayer().hasPermission(
 								"lib.commandtab.bypass"))
@@ -56,7 +56,7 @@ public class Main extends JavaPlugin implements Listener {
 										.contains("  "))))
 							event.setCancelled(true);
 					} catch (FieldAccessException e) {
-						Main.this.getLogger().log(Level.SEVERE,
+						AntiCommandTab.this.getLogger().log(Level.SEVERE,
 								"Couldn't access field.", e);
 					}
 			}
