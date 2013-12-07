@@ -26,7 +26,6 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 	// ProtocolLib Hook
 	ProtocolManager protocolManager;
 
-	//@SuppressWarnings("deprecation")
 	public void onEnable() {
 		saveDefaultConfig();
 
