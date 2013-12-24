@@ -5,4 +5,4 @@ AntiCommandTab prevents people from figuring out your server plugins or commands
 
 BukkitDev: http://dev.bukkit.org/bukkit-plugins/anticommandtab/
 
-Dev Builds: http://ci.playmc.cc/jobs/AntiCommandTab
+Dev Builds: http://ci.playmc.cc/job/AntiCommandTab
