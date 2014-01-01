@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,7 +30,8 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		this.protocolManager = ProtocolLibrary.getProtocolManager();
-		this.protocolManager.addPacketListener(new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
+		this.protocolManager.addPacketListener(new PacketAdapter(this,
+				ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
 			public void onPacketReceiving(PacketEvent event) {
 				if (event.getPacketType() == PacketType.Play.Client.TAB_COMPLETE)
 					try {
@@ -40,7 +40,7 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 							return;
 						PacketContainer packet = event.getPacket();
 						String message = (String) packet.getSpecificModifier(
-								String.class).read(0);
+								String.class).read(0).toLowerCase();
 						if ((message.startsWith("/"))
 								&& (!message.contains(" "))
 								|| ((message.startsWith("/ver")) && (!message
@@ -147,14 +147,10 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("act")) {
 			if (sender.hasPermission("act.reload")) {
-				sender.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.AQUA
-						+ "AntiCommandTab" + ChatColor.DARK_RED + "]"
-						+ ChatColor.RED + " Reloaded configuration file.");
+				sender.sendMessage("§4[§bAntiCommandTab§4] §cReloaded Configuration File");
 				reloadConfig();
 			} else {
-				sender.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.AQUA
-						+ "AntiCommandTab" + ChatColor.DARK_RED + "]"
-						+ ChatColor.RED + " You do not have permission.");
+				sender.sendMessage("§4[§bAntiCommandTab§4] §cNo Permission");
 			}
 		}
 		return false;
