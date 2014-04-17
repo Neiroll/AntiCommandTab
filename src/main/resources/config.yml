@@ -1,10 +1,10 @@
 #=======================================
-# AntiCommandTab v3.5 by libraryaddict   
+# AntiCommandTab v3.6 by libraryaddict   
 #    new and improved by sgtcaze         
 #      Dev Builds ci.playmc.cc          
 #=======================================
 # Usage:
-# %player - Replaces with the player's list name
+# %player - Replaces with the player's name
 # &a-f/0-9 - Replaces with color codes
 #=======================================
 

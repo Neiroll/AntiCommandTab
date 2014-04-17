@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,13 +23,44 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AntiCommandTab extends JavaPlugin implements Listener {
 
-	// ProtocolLib Hook
 	ProtocolManager protocolManager;
 
+	FileConfiguration config;
+
+	List<String> plugins = new ArrayList<String>();
+	List<String> version = new ArrayList<String>();
+	List<String> about = new ArrayList<String>();
+	List<String> question = new ArrayList<String>();
+
+	Boolean BlockPlugins, BlockVersion, BlockAbout, BlockQuestionMark;
+
+	String pluginsDeny, versionDeny, aboutDeny, qmDeny;
+
 	public void onEnable() {
+
+		config = getConfig();
+
 		saveDefaultConfig();
 
+		plugins.add("pl");
+		plugins.add("plugins");
+		version.add("ver");
+		version.add("version");
+		about.add("about");
+		question.add("?");
+
+		BlockPlugins = config.getBoolean("BlockPlugins");
+		BlockVersion = config.getBoolean("BlockVersion");
+		BlockAbout = config.getBoolean("BlockAbout");
+		BlockQuestionMark = config.getBoolean("BlockQuestionMark");
+
+		pluginsDeny = config.getString("Plugins").replaceAll("&", "§");
+		versionDeny = config.getString("Version").replaceAll("&", "§");
+		aboutDeny = config.getString("About").replaceAll("&", "§");
+		qmDeny = config.getString("QuestionMark").replaceAll("&", "§");
+
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+
 		this.protocolManager = ProtocolLibrary.getProtocolManager();
 		this.protocolManager.addPacketListener(new PacketAdapter(this,
 				ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
@@ -74,74 +106,46 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
 
 		Player player = event.getPlayer();
+
 		String[] msg = event.getMessage().split(" ");
 
-		List<String> plugins = new ArrayList<String>();
-		plugins.add("pl");
-		plugins.add("plugins");
+		if (!player.hasPermission("lib.commandtab.bypass")) {
 
-		List<String> version = new ArrayList<String>();
-		version.add("ver");
-		version.add("version");
-
-		List<String> about = new ArrayList<String>();
-		about.add("about");
-
-		List<String> question = new ArrayList<String>();
-		question.add("?");
-
-		if (!event.getPlayer().hasPermission("lib.commandtab.bypass")) {
-
-			if (getConfig().getBoolean("BlockPlugins")) {
+			if (BlockPlugins) {
 				for (String Loop : plugins) {
 					if (msg[0].equalsIgnoreCase("/" + Loop)) {
-						String Plugins = getConfig()
-								.getString("Plugins")
-								.replaceAll("&", "§")
-								.replaceAll("%player",
-										event.getPlayer().getPlayerListName());
-						event.getPlayer().sendMessage(Plugins);
+						player.sendMessage(pluginsDeny.replaceAll("%player",
+								player.getName()));
 						event.setCancelled(true);
 					}
 				}
 			}
 
-			if (getConfig().getBoolean("BlockVersion")) {
+			if (BlockVersion) {
 				for (String Loop : version) {
 					if (msg[0].equalsIgnoreCase("/" + Loop)) {
-						String Version = getConfig()
-								.getString("Version")
-								.replaceAll("&", "§")
-								.replaceAll("%player",
-										event.getPlayer().getPlayerListName());
-						player.sendMessage(Version);
-						event.setCancelled(true);
-					}
-				}
-			}
-			if (getConfig().getBoolean("BlockAbout")) {
-				for (String Loop : about) {
-					if (msg[0].equalsIgnoreCase("/" + Loop)) {
-						String About = getConfig()
-								.getString("About")
-								.replaceAll("&", "§")
-								.replaceAll("%player",
-										event.getPlayer().getPlayerListName());
-						player.sendMessage(About);
+						player.sendMessage(versionDeny.replaceAll("%player",
+								player.getName()));
 						event.setCancelled(true);
 					}
 				}
 			}
 
-			if (getConfig().getBoolean("BlockQuestionMark")) {
+			if (BlockAbout) {
+				for (String Loop : about) {
+					if (msg[0].equalsIgnoreCase("/" + Loop)) {
+						player.sendMessage(aboutDeny.replaceAll("%player",
+								player.getName()));
+						event.setCancelled(true);
+					}
+				}
+			}
+
+			if (BlockQuestionMark) {
 				for (String Loop : question) {
 					if (msg[0].equalsIgnoreCase("/" + Loop)) {
-						String QuestionMark = getConfig()
-								.getString("QuestionMark")
-								.replaceAll("&", "§")
-								.replaceAll("%player",
-										event.getPlayer().getPlayerListName());
-						player.sendMessage(QuestionMark);
+						player.sendMessage(qmDeny.replaceAll("%player",
+								player.getName()));
 						event.setCancelled(true);
 					}
 				}
@@ -149,7 +153,6 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 		}
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("act")) {

@@ -4,7 +4,7 @@
 
     <groupId>com.sgtcaze</groupId>
     <artifactId>AntiCommandTab</artifactId>
-    <version>3.5</version>
+    <version>3.6</version>
     <packaging>jar</packaging>
 
     <name>AntiCommandTab</name>
