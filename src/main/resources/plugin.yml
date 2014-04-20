@@ -1,5 +1,5 @@
 name: AntiCommandTab
-version: 3.6
+version: 3.7
 main: cc.playmc.anticommandtab.AntiCommandTab
 authors: [libraryaddict, sgtcaze]
 depend: [ProtocolLib]

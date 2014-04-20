@@ -43,11 +43,17 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 		saveDefaultConfig();
 
 		plugins.add("pl");
+		plugins.add("bukkit:pl");
 		plugins.add("plugins");
+		plugins.add("bukkit:plugins");
 		version.add("ver");
+		plugins.add("bukkit:ver");
 		version.add("version");
+		plugins.add("bukkit:version");
 		about.add("about");
+		plugins.add("bukkit:about");
 		question.add("?");
+		plugins.add("bukkit:?");
 
 		BlockPlugins = config.getBoolean("BlockPlugins");
 		BlockVersion = config.getBoolean("BlockVersion");
@@ -81,19 +87,18 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 						 * [TAB]. This way we can effectively cancel /ver [TAB]
 						 * as well.
 						 */
-						if (message.startsWith("/")
-								&& (!message.contains(" "))
-								|| (message.startsWith("/ver")
-										&& (!message.contains("  ")) || (message
-										.startsWith("/version")
-										&& (!message.contains("  ")) || (message
-										.startsWith("/?")
-										&& (!message.contains("  ")) || (message
-										.startsWith("/about")
-										&& (!message.contains("  ")) || (message
-										.startsWith("/help") && (!message
-										.contains("  "))))))))
-							event.setCancelled(true);
+
+						if (message.startsWith("/") && !message.contains(" ")
+								|| message.startsWith("/" + plugins)
+								&& !message.contains("  ")
+								|| message.startsWith("/" + version)
+								&& !message.contains("  ")
+								|| message.startsWith("/" + about)
+								&& !message.contains("  ")
+								|| message.startsWith("/" + question)
+								&& !message.contains("  "))
+							;
+						event.setCancelled(true);
 					} catch (FieldAccessException e) {
 						AntiCommandTab.this.getLogger().log(Level.SEVERE,
 								"Couldn't access field.", e);
