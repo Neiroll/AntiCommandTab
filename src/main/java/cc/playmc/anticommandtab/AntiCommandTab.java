@@ -1,11 +1,5 @@
 package cc.playmc.anticommandtab;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.*;
-import com.comphenix.protocol.reflect.FieldAccessException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +14,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.reflect.FieldAccessException;
 
 public class AntiCommandTab extends JavaPlugin implements Listener {
 
@@ -88,17 +91,13 @@ public class AntiCommandTab extends JavaPlugin implements Listener {
 						 * as well.
 						 */
 
-						if (message.startsWith("/") && !message.contains(" ")
-								|| message.startsWith("/" + plugins)
-								&& !message.contains("  ")
-								|| message.startsWith("/" + version)
-								&& !message.contains("  ")
-								|| message.startsWith("/" + about)
-								&& !message.contains("  ")
-								|| message.startsWith("/" + question)
-								&& !message.contains("  "))
-							;
-						event.setCancelled(true);
+						if ((message.startsWith("/") && !message.contains(" "))
+								|| (message.startsWith("/" + plugins) && !message.contains(" "))
+								|| (message.startsWith("/" + version) && !message.contains(" "))
+								|| (message.startsWith("/" + about) && !message.contains(" "))
+								|| (message.startsWith("/" + question) && !message.contains(" "))){
+							event.setCancelled(true);
+						}
 					} catch (FieldAccessException e) {
 						AntiCommandTab.this.getLogger().log(Level.SEVERE,
 								"Couldn't access field.", e);
